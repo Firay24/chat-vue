@@ -44,6 +44,9 @@ export const useAuthStore = defineStore("auth", {
         };
         this.isLoggedIn = true;
         this.error = "";
+
+        localStorage.setItem("authUser", JSON.stringify(this.user));
+        localStorage.setItem("authIsLoggedIn", "true");
       } else {
         this.error = "Email atau password salah.";
         this.isLoggedIn = false;
@@ -54,6 +57,19 @@ export const useAuthStore = defineStore("auth", {
       this.user = null;
       this.isLoggedIn = false;
       this.error = "";
+
+      localStorage.removeItem("authUser");
+      localStorage.removeItem("authIsLoggedIn");
+    },
+
+    restoreAuthFromLocalStorage() {
+      const savedUser = localStorage.getItem("authUser");
+      const loggedIn = localStorage.getItem("authIsLoggedIn") === "true";
+
+      if (savedUser && loggedIn) {
+        this.user = JSON.parse(savedUser);
+        this.isLoggedIn = true;
+      }
     },
   },
 });

@@ -9,7 +9,7 @@ defineProps<{
   <p
     :class="[
       'p-3 rounded-lg text-left w-fit max-w-96',
-      isSender ? 'bg-primary self-end' : 'bg-[#302d3f]',
+      isSender ? 'bg-primary' : 'bg-[#302d3f]',
     ]"
   >
     {{ msg }}

@@ -11,6 +11,7 @@ interface Message {
   timestampSend: number;
   timestampRead: number;
   isRead: boolean;
+  productId: string;
 }
 
 interface Participant {
@@ -116,19 +117,21 @@ export const useChatStore = defineStore("chat", {
 
     addMessageToRoom(
       roomId: string,
-      message: string,
+      message: string = "",
       senderId: string,
-      senderType: string
+      senderType: string,
+      productId: string = ""
     ) {
       const newMessage = {
         id: generateId(),
         roomId: roomId,
         senderId: senderId,
         senderType: senderType,
-        text: message,
+        text: message ?? "",
         timestampSend: Date.now() / 1000 / 60,
         timestampRead: 0,
         isRead: false,
+        productId: productId,
       };
 
       const existing = this.messages[roomId] || [];

@@ -48,7 +48,8 @@
           "text": "Ada min",
           "timestampSend": 29210955,
           "timestampRead": 29210955,
-          "isRead": true
+          "isRead": true,
+          "productId": ""
         }
       }
     ],
@@ -61,7 +62,8 @@
         "text": "Halo, ada yang bisa dibantu",
         "timestampSend": 29210950,
         "timestampRead": 29210954,
-        "isRead": true
+        "isRead": true,
+        "productId": ""
       },
       {
         "id": "EIX5MJ6PULX1OUL8MKL4",
@@ -71,7 +73,28 @@
         "text": "Ada min",
         "timestampSend": 29210955,
         "timestampRead": 29210955,
-        "isRead": true
+        "isRead": true,
+        "productId": ""
+      }
+    ],
+    "product": [
+      {
+        "id": "8KZ0P3OJRKEPTIDNHCSG",
+        "name": "Tshirt",
+        "image": "https://lh3.googleusercontent.com/wyUaJZMWA2oZmRMYqhEFcRo2E4Pm0MLzGP7cYemcPbj9zvWKTLCkgXscNnpTnX1-YJbasM50Xju1nsqK0IL4srDN2VspzRhELFxtP7g=s800",
+        "price": 20000
+      },
+      {
+        "id": "QZ49VPBK2OI8ZFQ3BHVJ",
+        "name": "Tshirt",
+        "image": "https://catbandit.com/cdn/shop/files/unisex-classic-tee-navy-back-67ddb2e46290e_2000x.jpg?v=1742582508",
+        "price": 20000
+      },
+      {
+        "id": "PQ1JU8DC6T7MFH9JL3QM",
+        "name": "Tshirt",
+        "image": "https://www.unbrokenshop.com/cdn/shop/products/printful-unbroken-one-more-rep-t-shirt-4222241636375.jpg?v=1673715621&width=720",
+        "price": 20000
       }
     ]
   }

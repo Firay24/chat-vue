@@ -7,7 +7,7 @@
 
     <form
       @submit.prevent="handleLogin"
-      class="w-full bg-gray-800 px-4 py-6 rounded-lg"
+      class="w-full bg-[#252331] px-4 py-6 rounded-lg"
     >
       <div class="mb-4 w-full">
         <div class="w-full flex items-start mb-2">

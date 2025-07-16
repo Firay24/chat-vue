@@ -16,7 +16,7 @@
       </div>
 
       <!-- main chat -->
-      <div class="flex flex-col gap-2 h-[83%]">
+      <div class="flex flex-col gap-2 h-[83%] overflow-y-auto">
         <template v-for="(message, index) in sortedMessages" :key="message.id">
           <template v-if="shouldShowDate(index)">
             <div class="text-center text-sm text-gray-400 my-4">

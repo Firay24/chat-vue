@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <div
     :class="[
-      'p-4 rounded-xl cursor-pointer',
+      'p-4 rounded-xl cursor-pointer hover:bg-[#302d3f]',
       active ? 'bg-primary' : 'bg-[#252331]',
     ]"
   >

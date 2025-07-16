@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import RoomChatCard from "../components/RoomChatCard.vue";
 import { useAuthStore } from "../stores/authStore";
-import { ref } from "vue";
+import { useChatStore } from "../stores/chatStore";
+import RoomChatCard from "../components/RoomChatCard.vue";
+import { formatEpochMinutes } from "../utils/formatEpochMinutes";
 
 const route = useRoute();
 const router = useRouter();
+
 const auth = useAuthStore();
+const chat = useChatStore();
+
 const user = auth.getUser;
 const params = route.params.roomId as string;
+
+const rooms = computed(() => chat.rooms);
 
 const showLogoutModal = ref(false);
 const confirmLogout = () => {
@@ -16,6 +23,14 @@ const confirmLogout = () => {
   showLogoutModal.value = false;
   router.push("/login");
 };
+
+const goToDetailRoom = (roomId: string) => {
+  router.push(`/chat/${roomId}`);
+};
+
+onMounted(() => {
+  chat.loadRoomByUserId(auth.user?.id || "");
+});
 </script>
 
 <template>
@@ -110,19 +125,23 @@ const confirmLogout = () => {
         <!-- Komponen RoomList -->
         <div class="flex flex-col gap-3">
           <RoomChatCard
-            v-for="i in 10"
-            :key="i"
-            msg="Hai"
-            :active="false"
-            name="Admin"
-            times="1 h ago"
+            v-for="room in rooms"
+            :key="room.roomId"
+            :msg="room.lastMessage.text"
+            :active="room.isRead"
+            :name="
+              room.participants.find((p) => p.id !== user?.id)?.name ||
+              'Unknown'
+            "
+            :times="formatEpochMinutes(room.lastMessage.timestampSend)"
+            @click="goToDetailRoom(room.roomId)"
           />
         </div>
       </aside>
       <main class="w-3/4 hidden md:block">
         <RouterView />
         <div
-          v-if="!params"
+          v-if="route.path === '/'"
           class="flex gap-5 flex-col items-center justify-center h-[80vh]"
         >
           <img src="/logo.png" alt="logo" class="opacity-10 w-36" />

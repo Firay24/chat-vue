@@ -1,30 +1,31 @@
 import { defineStore } from "pinia";
+import rawData from "../data/listRooms.json";
 
 interface Message {
   id: string;
-  room_id: string;
-  sender_id: string;
-  sender_type: "customer" | "admin";
+  roomId: string;
+  senderId: string;
+  senderType: string;
   text: string;
-  timestamp: string;
-  is_read: boolean;
+  timestampSend: number;
+  timestampRead: number;
+  isRead: boolean;
+}
+
+interface Participant {
+  id: string;
+  name: string;
+  avatar: string;
+  email: string;
+  role: string;
+  password: string;
 }
 
 interface Room {
-  room_id: string;
-  customer: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
-  agent: {
-    id: string;
-    name: string;
-  };
-  last_message: Message;
-  is_read: boolean;
-  source: string;
-  room_badge: string | null;
+  roomId: string;
+  isRead: boolean;
+  participants: Participant[];
+  lastMessage: Message;
 }
 
 export const useChatStore = defineStore("chat", {
@@ -37,7 +38,7 @@ export const useChatStore = defineStore("chat", {
 
   getters: {
     selectedRoom(state): Room | undefined {
-      return state.rooms.find((r) => r.room_id === state.selectedRoomId);
+      return state.rooms.find((r) => r.roomId === state.selectedRoomId);
     },
     currentMessages(state): Message[] {
       return state.messages[state.selectedRoomId] ?? [];
@@ -57,13 +58,14 @@ export const useChatStore = defineStore("chat", {
       this.selectedRoomId = id;
     },
 
-    login() {
-      this.isLoggedIn = true;
-    },
+    loadRoomByUserId(userId: string) {
+      const data = rawData.data;
 
-    logout() {
-      this.isLoggedIn = false;
-      this.selectedRoomId = "";
+      const filteredRooms: Room[] = data.customerRooms.filter((room: any) => {
+        return room.participants.some((p: any) => p.id === userId);
+      });
+
+      this.setRooms(filteredRooms);
     },
   },
 });

@@ -46,9 +46,9 @@
           "senderId": "47VVKGD70EFHO0KP5PHG",
           "senderType": "customer",
           "text": "Ada min",
-          "timestampSend": "2025-08-20T10:00:00Z",
-          "timestampRead": "2025-08-20T10:00:00Z",
-          "is_read": true
+          "timestampSend": 29210955,
+          "timestampRead": 29210955,
+          "isRead": true
         }
       }
     ],
@@ -59,9 +59,9 @@
         "senderId": "H3ALI1ZZRJY14KKU8Z0C",
         "senderType": "admin",
         "text": "Halo, ada yang bisa dibantu",
-        "timestampSend": "2025-08-20T10:00:00Z",
-        "timestampRead": "2025-08-20T10:00:00Z",
-        "is_read": true
+        "timestampSend": 29210955,
+        "timestampRead": 29210955,
+        "isRead": true
       },
       {
         "id": "EIX5MJ6PULX1OUL8MKL4",
@@ -69,9 +69,9 @@
         "senderId": "47VVKGD70EFHO0KP5PHG",
         "senderType": "customer",
         "text": "Ada min",
-        "timestampSend": "2025-08-20T10:00:00Z",
-        "timestampRead": "2025-08-20T10:00:00Z",
-        "is_read": true
+        "timestampSend": 29210955,
+        "timestampRead": 29210955,
+        "isRead": true
       }
     ]
   }

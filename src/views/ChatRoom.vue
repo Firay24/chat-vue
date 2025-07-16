@@ -72,6 +72,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
-const roomId = useRoute().params.roomId as string;
+// import { useRoute } from "vue-router";
+// const roomId = useRoute().params.roomId as string;
 </script>

@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
+import data from "../data/listRooms.json";
 
 interface User {
   id: string;
   name: string;
   email: string;
   password: string;
+  role: string;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -17,20 +19,7 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     login(email: string, password: string) {
       // dummy users
-      const dummyUsers: User[] = [
-        {
-          id: "user-001",
-          name: "Admin John",
-          email: "admin@example.com",
-          password: "123456",
-        },
-        {
-          id: "user-002",
-          name: "Agent Lisa",
-          email: "lisa@example.com",
-          password: "password",
-        },
-      ];
+      const dummyUsers: User[] = data.data.customer;
 
       const found = dummyUsers.find(
         (user) => user.email === email && user.password === password
@@ -41,6 +30,7 @@ export const useAuthStore = defineStore("auth", {
           id: found.id,
           name: found.name,
           email: found.email,
+          role: found.role,
         };
         this.isLoggedIn = true;
         this.error = "";

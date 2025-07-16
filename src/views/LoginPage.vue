@@ -5,7 +5,10 @@
     </div>
     <h2 class="text-3xl font-semibold mt-4 mb-8">Sign in to Chat</h2>
 
-    <div class="w-full bg-gray-800 px-4 py-6 rounded-lg">
+    <form
+      @submit.prevent="handleLogin"
+      class="w-full bg-gray-800 px-4 py-6 rounded-lg"
+    >
       <div class="mb-4 w-full">
         <div class="w-full flex items-start mb-2">
           <label for="email" class="">Email address</label>
@@ -38,7 +41,7 @@
       >
         Sign in
       </button>
-    </div>
+    </form>
 
     <p v-if="auth.error" class="mt-4 text-red-500">{{ auth.error }}</p>
   </div>

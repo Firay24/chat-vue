@@ -56,6 +56,25 @@ export const useChatStore = defineStore("chat", {
         return room.participants.some((p: any) => p.id === userId);
       });
 
+      // 🔁 Update lastMessage tiap room dari localStorage jika tersedia
+      for (const room of filteredRooms) {
+        const stored = localStorage.getItem(`messages_${room.roomId}`);
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored) as Message[];
+
+            // Ambil message terbaru (timestampSend terbesar)
+            const latest = parsed.reduce((a, b) =>
+              a.timestampSend > b.timestampSend ? a : b
+            );
+
+            room.lastMessage = latest;
+          } catch (e) {
+            console.error("Gagal parsing message di localStorage:", e);
+          }
+        }
+      }
+
       this.setRooms(filteredRooms);
     },
 
@@ -102,7 +121,7 @@ export const useChatStore = defineStore("chat", {
     getOtherParticipantInfo(
       roomId: string,
       userId: string
-    ): { name: string; role: string } | null {
+    ): { name: string; role: string; avatar: string } | null {
       const room = this.rooms.find((room) => room.roomId === roomId);
       if (!room) return null;
 
@@ -112,6 +131,7 @@ export const useChatStore = defineStore("chat", {
       return {
         name: other.name,
         role: other.role,
+        avatar: other.avatar,
       };
     },
 
@@ -128,7 +148,7 @@ export const useChatStore = defineStore("chat", {
         senderId: senderId,
         senderType: senderType,
         text: message ?? "",
-        timestampSend: Date.now() / 1000 / 60,
+        timestampSend: Math.floor(Date.now() / 1000 / 60),
         timestampRead: 0,
         isRead: false,
         productId: productId,
@@ -138,6 +158,13 @@ export const useChatStore = defineStore("chat", {
       const updated = [...existing, newMessage];
 
       this.setMessages(roomId, updated);
+
+      const room = this.rooms.find((room) => room.roomId === roomId);
+      if (room) {
+        room.lastMessage = newMessage;
+
+        localStorage.setItem("chat_rooms", JSON.stringify(this.rooms));
+      }
     },
   },
 });

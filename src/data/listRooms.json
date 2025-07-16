@@ -16,6 +16,14 @@
         "email": "aleajane@mail.com",
         "role": "customer",
         "password": "chat123"
+      },
+      {
+        "id": "01THCIB8UMAUZQG4VAW1",
+        "name": "Mark David",
+        "avatar": "https://doodleipsum.com/700/avatar-4?i=4821880a1497f1ff73c0f632ac340686",
+        "email": "markdavid@mail.com",
+        "role": "customer",
+        "password": "chat123"
       }
     ],
     "customerRooms": [
@@ -51,6 +59,39 @@
           "isRead": true,
           "productId": ""
         }
+      },
+      {
+        "roomId": "WVUTCGR3U3Y160KLP88O",
+        "isRead": false,
+        "participants": [
+          {
+            "id": "H3ALI1ZZRJY14KKU8Z0C",
+            "name": "Admin Joe",
+            "avatar": "https://doodleipsum.com/700x700?i=fc734d103a7de613156bdd603038c56b",
+            "email": "joeadmin@mail.com",
+            "role": "admin",
+            "password": "chat123"
+          },
+          {
+            "id": "01THCIB8UMAUZQG4VAW1",
+            "name": "Mark David",
+            "avatar": "https://doodleipsum.com/700/avatar-4?i=4821880a1497f1ff73c0f632ac340686",
+            "email": "markdavid@mail.com",
+            "role": "customer",
+            "password": "chat123"
+          }
+        ],
+        "lastMessage": {
+          "id": "BIYZ971W5VX4LXXMYR3O",
+          "roomId": "WVUTCGR3U3Y160KLP88O",
+          "senderId": "01THCIB8UMAUZQG4VAW1",
+          "senderType": "customer",
+          "text": "Ga ada",
+          "timestampSend": 29210955,
+          "timestampRead": 29210955,
+          "isRead": true,
+          "productId": ""
+        }
       }
     ],
     "message": [
@@ -60,7 +101,7 @@
         "senderId": "H3ALI1ZZRJY14KKU8Z0C",
         "senderType": "admin",
         "text": "Halo, ada yang bisa dibantu",
-        "timestampSend": 29210950,
+        "timestampSend": 29202630,
         "timestampRead": 29210954,
         "isRead": true,
         "productId": ""
@@ -71,6 +112,28 @@
         "senderId": "47VVKGD70EFHO0KP5PHG",
         "senderType": "customer",
         "text": "Ada min",
+        "timestampSend": 29210955,
+        "timestampRead": 29210955,
+        "isRead": true,
+        "productId": ""
+      },
+      {
+        "id": "KZB7B0OD19FO8E15T1Y6",
+        "roomId": "WVUTCGR3U3Y160KLP88O",
+        "senderId": "H3ALI1ZZRJY14KKU8Z0C",
+        "senderType": "admin",
+        "text": "Halo, ada yang bisa dibantu",
+        "timestampSend": 29202630,
+        "timestampRead": 29210954,
+        "isRead": true,
+        "productId": ""
+      },
+      {
+        "id": "BIYZ971W5VX4LXXMYR3O",
+        "roomId": "WVUTCGR3U3Y160KLP88O",
+        "senderId": "01THCIB8UMAUZQG4VAW1",
+        "senderType": "customer",
+        "text": "Ga ada",
         "timestampSend": 29210955,
         "timestampRead": 29210955,
         "isRead": true,

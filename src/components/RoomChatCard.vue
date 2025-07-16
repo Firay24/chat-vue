@@ -4,6 +4,7 @@ defineProps<{
   active: boolean;
   name: string;
   times: string;
+  imgUrl: string;
 }>();
 </script>
 
@@ -17,10 +18,7 @@ defineProps<{
     <div class="flex justify-between items-start">
       <div class="flex gap-3 items-center">
         <div class="w-16">
-          <img
-            src="https://doodleipsum.com/700x700?i=fc734d103a7de613156bdd603038c56b"
-            alt=" logo"
-          />
+          <img :src="imgUrl" alt=" logo" />
         </div>
         <div class="flex flex-col items-start">
           <p class="font-semibold text-xl">{{ name }}</p>

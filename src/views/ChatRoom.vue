@@ -7,10 +7,7 @@
       <!-- header chat -->
       <div class="flex gap-3 items-center border-b pb-2 border-[#302d3f]">
         <div class="w-16">
-          <img
-            src="https://doodleipsum.com/700x700?i=fc734d103a7de613156bdd603038c56b"
-            alt=" logo"
-          />
+          <img :src="info?.avatar" alt=" logo" />
         </div>
         <div class="flex flex-col items-start">
           <p class="font-semibold text-xl">{{ info?.name }}</p>
@@ -20,18 +17,23 @@
 
       <!-- main chat -->
       <div class="flex flex-col gap-2 h-[83%]">
-        <div
-          v-for="message in sortedMessages"
-          :key="message.id"
-          :class="message.senderId === user?.id ? 'self-end' : 'self-start'"
-        >
-          <ProductCard v-if="message.productId" :id="message.productId" />
-          <BubleChat
-            v-else
-            :msg="message.text"
-            :isSender="message.senderId === user?.id"
-          />
-        </div>
+        <template v-for="(message, index) in sortedMessages" :key="message.id">
+          <template v-if="shouldShowDate(index)">
+            <div class="text-center text-sm text-gray-400 my-4">
+              {{ formatChatDate(message.timestampSend) }}
+            </div>
+          </template>
+          <div
+            :class="message.senderId === user?.id ? 'self-end' : 'self-start'"
+          >
+            <ProductCard v-if="message.productId" :id="message.productId" />
+            <BubleChat
+              v-else
+              :msg="message.text"
+              :isSender="message.senderId === user?.id"
+            />
+          </div>
+        </template>
       </div>
 
       <!-- modal product -->
@@ -88,6 +90,7 @@
         />
 
         <div
+          v-if="user?.role === 'admin'"
           @click="showModalProduct = true"
           class="cursor-pointer p-2 hover:bg-[#302d3f] rounded-full"
         >
@@ -145,22 +148,36 @@ import { useAuthStore } from "../stores/authStore";
 import BubleChat from "../components/BubleChat.vue";
 import ProductCard from "../components/ProductCard.vue";
 import data from "../data/listRooms.json";
+import formatChatDate from "../utils/formatChatDate";
 
 const auth = useAuthStore();
+const route = useRoute();
 const chatStore = useChatStore();
 
 const user = auth.getUser;
 const newMessage = ref("");
 const showModalProduct = ref(false);
-const roomId = useRoute().params.roomId as string;
+const roomId = computed(() => route.params.roomId as string);
 const products = computed(() => data.data.product);
 
 const sortedMessages = computed(() =>
-  chatStore.getSortedMessagesByRoomId(roomId)
+  chatStore.getSortedMessagesByRoomId(roomId.value)
 );
 const info = computed(() =>
-  chatStore.getOtherParticipantInfo(roomId, user?.id || "")
+  chatStore.getOtherParticipantInfo(roomId.value, user?.id || "")
 );
+
+function shouldShowDate(index: number) {
+  if (index === 0) return true;
+
+  const prev = sortedMessages.value[index - 1];
+  const current = sortedMessages.value[index];
+
+  const prevDate = new Date(prev.timestampSend * 60 * 1000);
+  const currentDate = new Date(current.timestampSend * 60 * 1000);
+
+  return prevDate.toDateString() !== currentDate.toDateString();
+}
 
 function sendMessage(message?: string, productId?: string) {
   const trimmedMessage = message?.trim() ?? "";
@@ -168,7 +185,7 @@ function sendMessage(message?: string, productId?: string) {
   showModalProduct.value = false;
 
   chatStore.addMessageToRoom(
-    roomId,
+    roomId.value,
     trimmedMessage,
     user?.id || "",
     user?.role || "",

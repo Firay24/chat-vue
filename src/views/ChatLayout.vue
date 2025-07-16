@@ -45,10 +45,7 @@ onMounted(() => {
       </div>
       <div class="flex gap-3 items-center">
         <div class="w-8">
-          <img
-            src="https://doodleipsum.com/700x700?i=fc734d103a7de613156bdd603038c56b"
-            alt=" logo"
-          />
+          <img :src="user?.avatar" alt=" logo" />
         </div>
         <p class="font-semibold text-xl">{{ user?.name }}</p>
         <div
@@ -128,6 +125,9 @@ onMounted(() => {
             v-for="room in rooms"
             :key="room.roomId"
             :msg="room.lastMessage.text"
+            :imgUrl="
+              room.participants.find((p) => p.id !== user?.id)?.avatar || ''
+            "
             :active="params === room.roomId"
             :name="
               room.participants.find((p) => p.id !== user?.id)?.name ||

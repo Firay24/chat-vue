@@ -7,6 +7,7 @@ interface User {
   email: string;
   password: string;
   role: string;
+  avatar: string;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -36,6 +37,7 @@ export const useAuthStore = defineStore("auth", {
           name: found.name,
           email: found.email,
           role: found.role,
+          avatar: found.avatar,
         };
         this.isLoggedIn = true;
         this.error = "";

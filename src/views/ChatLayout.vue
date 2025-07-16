@@ -13,7 +13,7 @@ const auth = useAuthStore();
 const chat = useChatStore();
 
 const user = auth.getUser;
-const params = route.params.roomId as string;
+const params = computed(() => route.params.roomId as string);
 
 const rooms = computed(() => chat.rooms);
 
@@ -128,7 +128,7 @@ onMounted(() => {
             v-for="room in rooms"
             :key="room.roomId"
             :msg="room.lastMessage.text"
-            :active="room.isRead"
+            :active="params === room.roomId"
             :name="
               room.participants.find((p) => p.id !== user?.id)?.name ||
               'Unknown'

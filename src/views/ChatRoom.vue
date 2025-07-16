@@ -13,28 +13,19 @@
           />
         </div>
         <div class="flex flex-col items-start">
-          <p class="font-semibold text-xl">Hatake Fira</p>
-          <p class="text-gray-500">Customer</p>
+          <p class="font-semibold text-xl">{{ info?.name }}</p>
+          <p class="text-gray-500">{{ info?.role }}</p>
         </div>
       </div>
 
       <!-- main chat -->
       <div class="flex flex-col gap-2 h-[83%]">
-        <!-- receiver -->
-        <p class="p-3 rounded-lg bg-[#302d3f] text-left w-fit max-w-96">
-          Hi Jonathan!
-        </p>
-        <p class="p-3 rounded-lg bg-[#302d3f] text-left w-fit max-w-96">
-          Are you available tomorrow at 3 pm?
-        </p>
-
-        <!-- sender -->
-        <p class="p-3 self-end rounded-lg bg-primary text-left w-fit max-w-96">
-          Hello
-        </p>
-        <p class="p-3 self-end rounded-lg bg-primary text-left w-fit max-w-96">
-          Are you available tomorrow at 3 pm?
-        </p>
+        <BubleChat
+          v-for="message in sortedMessages"
+          :key="message.id"
+          :msg="message.text"
+          :isSender="message.senderId === user?.id"
+        />
       </div>
 
       <!-- footer chat -->
@@ -72,6 +63,17 @@
 </template>
 
 <script lang="ts" setup>
-// import { useRoute } from "vue-router";
-// const roomId = useRoute().params.roomId as string;
+import { useRoute } from "vue-router";
+import { useChatStore } from "../stores/chatStore";
+import { useAuthStore } from "../stores/authStore";
+import BubleChat from "../components/BubleChat.vue";
+
+const auth = useAuthStore();
+const chatStore = useChatStore();
+
+const user = auth.getUser;
+const roomId = useRoute().params.roomId as string;
+
+const sortedMessages = chatStore.getSortedMessagesByRoomId(roomId);
+const info = chatStore.getOtherParticipantInfo(roomId, user?.id || "");
 </script>

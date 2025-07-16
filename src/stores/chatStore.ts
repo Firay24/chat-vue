@@ -36,15 +36,6 @@ export const useChatStore = defineStore("chat", {
     isLoggedIn: false,
   }),
 
-  getters: {
-    selectedRoom(state): Room | undefined {
-      return state.rooms.find((r) => r.roomId === state.selectedRoomId);
-    },
-    currentMessages(state): Message[] {
-      return state.messages[state.selectedRoomId] ?? [];
-    },
-  },
-
   actions: {
     setRooms(data: Room[]) {
       this.rooms = data;
@@ -52,10 +43,7 @@ export const useChatStore = defineStore("chat", {
 
     setMessages(roomId: string, data: Message[]) {
       this.messages[roomId] = data;
-    },
-
-    selectRoom(id: string) {
-      this.selectedRoomId = id;
+      localStorage.setItem(`messages_${roomId}`, JSON.stringify(data));
     },
 
     loadRoomByUserId(userId: string) {
@@ -66,6 +54,50 @@ export const useChatStore = defineStore("chat", {
       });
 
       this.setRooms(filteredRooms);
+    },
+
+    getSortedMessagesByRoomId(roomId: string): Message[] {
+      if (this.messages[roomId]) {
+        return this.messages[roomId]
+          .slice()
+          .sort((a, b) => a.timestampSend - b.timestampSend);
+      }
+
+      const stored = localStorage.getItem(`messages_${roomId}`);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored) as Message[];
+          this.setMessages(roomId, parsed); // ⬅️ juga simpan ke state
+          return parsed
+            .slice()
+            .sort((a, b) => a.timestampSend - b.timestampSend);
+        } catch (e) {
+          console.error("Failed to parse localStorage for", roomId, e);
+        }
+      }
+
+      const allMessages: Message[] = rawData.data.message;
+      const filtered = allMessages.filter((msg) => msg.roomId === roomId);
+
+      this.setMessages(roomId, filtered);
+
+      return filtered.slice().sort((a, b) => a.timestampSend - b.timestampSend);
+    },
+
+    getOtherParticipantInfo(
+      roomId: string,
+      userId: string
+    ): { name: string; role: string } | null {
+      const room = this.rooms.find((room) => room.roomId === roomId);
+      if (!room) return null;
+
+      const other = room.participants.find((p) => p.id !== userId);
+      if (!other) return null;
+
+      return {
+        name: other.name,
+        role: other.role,
+      };
     },
   },
 });

@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import rawData from "../data/listRooms.json";
+import generateId from "../utils/generateId";
 
 interface Message {
   id: string;
@@ -39,6 +40,7 @@ export const useChatStore = defineStore("chat", {
   actions: {
     setRooms(data: Room[]) {
       this.rooms = data;
+      localStorage.setItem("chat_rooms", JSON.stringify(data));
     },
 
     setMessages(roomId: string, data: Message[]) {
@@ -54,6 +56,18 @@ export const useChatStore = defineStore("chat", {
       });
 
       this.setRooms(filteredRooms);
+    },
+
+    loadRoomsFromStorage() {
+      const stored = localStorage.getItem("chat_rooms");
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored) as Room[];
+          this.rooms = parsed;
+        } catch (e) {
+          console.error("Failed to parse chat_rooms:", e);
+        }
+      }
     },
 
     getSortedMessagesByRoomId(roomId: string): Message[] {
@@ -98,6 +112,29 @@ export const useChatStore = defineStore("chat", {
         name: other.name,
         role: other.role,
       };
+    },
+
+    addMessageToRoom(
+      roomId: string,
+      message: string,
+      senderId: string,
+      senderType: string
+    ) {
+      const newMessage = {
+        id: generateId(),
+        roomId: roomId,
+        senderId: senderId,
+        senderType: senderType,
+        text: message,
+        timestampSend: Date.now() / 1000 / 60,
+        timestampRead: 0,
+        isRead: false,
+      };
+
+      const existing = this.messages[roomId] || [];
+      const updated = [...existing, newMessage];
+
+      this.setMessages(roomId, updated);
     },
   },
 });

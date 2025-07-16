@@ -29,14 +29,19 @@
       </div>
 
       <!-- footer chat -->
-      <div class="flex justify-between border-t border-[#302d3f] pt-2">
+      <form
+        @submit.prevent="sendMessage"
+        class="flex justify-between border-t border-[#302d3f] pt-2"
+      >
         <input
+          v-model="newMessage"
           type="text"
           placeholder="Type a message"
           class="bg-transparent active:border-none focus:outline-none w-full"
         />
 
-        <div
+        <button
+          type="submit"
           class="text-white cursor-pointer p-2 hover:bg-[#302d3f] rounded-full"
         >
           <svg
@@ -56,13 +61,14 @@
             />
             <path d="M6 12h16" />
           </svg>
-        </div>
-      </div>
+        </button>
+      </form>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useChatStore } from "../stores/chatStore";
 import { useAuthStore } from "../stores/authStore";
@@ -72,8 +78,31 @@ const auth = useAuthStore();
 const chatStore = useChatStore();
 
 const user = auth.getUser;
+const newMessage = ref("");
 const roomId = useRoute().params.roomId as string;
 
-const sortedMessages = chatStore.getSortedMessagesByRoomId(roomId);
-const info = chatStore.getOtherParticipantInfo(roomId, user?.id || "");
+const sortedMessages = computed(() =>
+  chatStore.getSortedMessagesByRoomId(roomId)
+);
+const info = computed(() =>
+  chatStore.getOtherParticipantInfo(roomId, user?.id || "")
+);
+
+function sendMessage() {
+  if (!newMessage.value.trim()) return;
+
+  chatStore.addMessageToRoom(
+    roomId,
+    newMessage.value,
+    user?.id || "",
+    user?.role || ""
+  );
+  newMessage.value = "";
+}
+
+onMounted(() => {
+  if (!chatStore.rooms.length) {
+    chatStore.loadRoomsFromStorage();
+  }
+});
 </script>

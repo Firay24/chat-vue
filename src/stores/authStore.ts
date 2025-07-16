@@ -16,6 +16,11 @@ export const useAuthStore = defineStore("auth", {
     error: "", // untuk tampilkan pesan error login
   }),
 
+  getters: {
+    getUser: (state) => state.user,
+    getError: (state) => state.error,
+  },
+
   actions: {
     login(email: string, password: string) {
       // dummy users
